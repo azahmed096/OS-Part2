@@ -34,8 +34,8 @@ task debut_nb(int players_count, int tasks, int player_id) {
   }
 }
 
-std::vector<color_t> combi(int order,
-                           int length,
+std::vector<color_t> combi(size_t order,
+                           uint length,
                            std::vector<color_t> alphabet) {
   if (length == 0) {
     return std::vector<color_t>();
@@ -67,15 +67,15 @@ std::vector<color_t> combi(int order,
 }
 
 
-int factorial(int x) {
-  int res = 1;
+size_t factorial(uint x) {
+  size_t res = 1;
   for (auto i = 2; i <= x; ++i) {
     res *= i;
   }
   return res;
 }
 
-int arangement(int n, int k) {
+size_t arangement(uint n, uint k) {
   return factorial(n) / factorial(n - k);
 }
 

@@ -82,7 +82,7 @@ bool plausible(guess_t guess, history_t& history) {
   return true;
 }
 
-std::vector<color_t> randomSolution(int colors, int spots) {
+std::vector<color_t> randomSolution(int colors, size_t spots) {
   std::vector<color_t> result;
   std::random_device rd;
   std::mt19937 g(rd());

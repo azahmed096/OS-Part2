@@ -3,7 +3,7 @@
 #include <vector>
 #include <iostream>
 
-#define COLORS 12
+#define COLORS 15
 #define SPOTS 7
 #define DEBUG true
 
@@ -29,6 +29,6 @@ bool contains_duplicate(guess_t guess);
 bool bad_values(guess_t guess);
 evaluation evaluate(guess_t answer, guess_t guess);
 bool plausible(guess_t guess, history_t& history);
-std::vector<color_t> randomSolution(int, int);
+std::vector<color_t> randomSolution(int, size_t);
 std::ostream& operator<< (std::ostream& os, const evaluation& obj);
 #endif

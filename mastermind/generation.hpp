@@ -13,11 +13,12 @@ struct task {
 
 
 class Generator {
-  int current, count, length;
+  size_t current, count;
+  int length;
   history_t history;
 
  public:
-  Generator(int first, int count, int length)
+  Generator(size_t first, size_t count, int length)
       : current(first), count(count), length(length) {}
   std::vector<color_t> next();
   void add(masterResponse resp);
@@ -26,13 +27,13 @@ class Generator {
 task debut_nb(int players_count, int tasks, int player_id);
 
 
-std::vector<color_t> combi(int order,
-                           int length,
+std::vector<color_t> combi(size_t order,
+                           uint length,
                            std::vector<color_t> alphabet);
 
-int factorial(int x);
+size_t factorial(uint x);
 
-int arangement(int n, int k);
+size_t arangement(uint n, uint k);
 std::ostream& operator<< (std::ostream& os, const task& obj);
 
 #endif
