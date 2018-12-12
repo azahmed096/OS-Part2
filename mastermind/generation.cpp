@@ -13,10 +13,10 @@ std::vector<color_t> Generator::next() {
       result = combi(current++, length, alphabet);
       plaus = plausible(&result[0], history);
     }
-    if (!count) {
-      return std::vector<color_t>{-1, -1, -1, -1};
+    if (plaus) {
+      return result;
     }
-    return result;
+    return std::vector<color_t>{-1, -1, -1, -1};
   }
 
 void Generator::add(masterResponse resp) {history.push_back(resp); }

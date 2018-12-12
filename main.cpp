@@ -27,6 +27,11 @@ void master(int size) {
   int recvcnt = SPOTS;
   int recvBuff[size * SPOTS];
   std::vector<color_t> solution(randomSolution(COLORS, SPOTS));
+  /* To generate one of the worst cases scenarios
+  for (auto i = COLORS - 1; i >= COLORS - SPOTS; --i){
+    solution.push_back(i);
+  }
+  */
   guess_t sol = &solution[0];
   std::cout << "Solution is ";
   print(solution);
