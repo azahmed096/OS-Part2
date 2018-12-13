@@ -34,7 +34,16 @@ void Master::print_recieved(guess_t guess) {
 void Master::run() {
   guess_t sol = &solution[0];
   bool finished = false;
-
+  
+/*
+  // Uncommenting this will use the worst case solution
+  solution.clear();
+  int xx = COLORS - 1;
+  while (solution.size() < SPOTS){
+    solution.push_back(xx);
+    --xx;
+  }
+*/
   print_solution();
   while (!finished) {
     evaluation best_eval{-1 /* perfect */, -1 /* colourOnly */};
