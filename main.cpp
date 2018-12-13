@@ -27,24 +27,16 @@ void master(int size) {
   int recvcnt = SPOTS;
   int recvBuff[size * SPOTS];
   std::vector<color_t> solution(randomSolution(COLORS, SPOTS));
-  /* To generate one of the worst cases scenarios
-  for (auto i = COLORS - 1; i >= COLORS - SPOTS; --i){
-    solution.push_back(i);
-  }
-  */
   guess_t sol = &solution[0];
   std::cout << "Solution is ";
   print(solution);
   std::cout << std::endl;
 
-  /*  for (int i = 0; i < SPOTS; ++i) {
-      sendBuff[i] = -1;
-    }*/
   bool finished = false;
   while (!finished) {
     MPI_Gather(&sendBuff, sendcnt, MPI_INT, &recvBuff, recvcnt, MPI_INT, 0,
                MPI_COMM_WORLD);
-    std::cout << "recieve buffer is : ";
+    std::cout << "Master received Guess : ";
     for (auto x = SPOTS; x < size * SPOTS; ++x)
       std::cout << recvBuff[x] << " ";
     std::cout << std::endl;
@@ -59,7 +51,6 @@ void master(int size) {
         continue;
       }
       auto eval = evaluate(sol, current);
-      // std::cout << eval << "vs" << best_eval << std::endl;
       if (eval > best_eval) {
         best_eval = eval;
         best = current;
@@ -81,7 +72,7 @@ void master(int size) {
     MPI_Bcast(reinterpret_cast<int*>(&resp),
               sizeof(masterResponse) / sizeof(int), MPI_INT, 0, MPI_COMM_WORLD);
   }
-  std::cout << "master finished cooooool" << std::endl;
+  std::cout << "master finished ! " << std::endl;
 }
 
 task debut_nb(int players_count, int tasks, int player_id);
@@ -113,7 +104,6 @@ void player(int id, int size) {
   std::cout << '[' << id << "]cool finished !" << std::endl;
 }
 
-/// player_id in [0, players_count[
 
 int main(int argc, char* argv[]) {
   std::vector<std::pair<guess_t, evaluation>> history;
@@ -126,21 +116,6 @@ int main(int argc, char* argv[]) {
     master(size);
   else
     player(id, size);
-  /*
-  if (id == 0) {
-      for (int i = 0; i < size * SPOTS; ++i) {
-          std::cout << recvBuff[i] << " ";
-      }
-      std::vector<color_t> colors;
-      for (int i = 0; i < COLORS; ++i){
-          colors.push_back(i);
-      }
-      for (int i = 0; i < 24; ++i) {
-          auto x = combi(i, 4, colors);
-          std::cout << i << " ";
-          print(x);
-      }
-  }*/
 
   MPI_Finalize();
   return 0;

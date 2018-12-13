@@ -1,6 +1,10 @@
 #include "generation.hpp"
 
 
+/* Return the next plausible combinaison 
+but if no plausible guess if found, the method return an
+array of -1
+*/
 std::vector<color_t> Generator::next() {
     bool plaus = false;
     std::vector<color_t> result;
@@ -16,13 +20,16 @@ std::vector<color_t> Generator::next() {
     if (plaus) {
       return result;
     }
-    return std::vector<color_t>{-1, -1, -1, -1};
+    return std::vector<color_t>{-1};
   }
 
 /* Adding of a plausible guess to the history */
 void Generator::add(masterResponse resp) {history.push_back(resp); }
 
-/* */
+/* Method that return for each process the number of combinaison that 
+it has to test and the starting index (order of the combinaison)
+
+Nb : player count correspond to process id -1  */
 task debut_nb(int players_count, int tasks, int player_id) {
   int d = tasks / players_count;
   int m = tasks % players_count;
@@ -53,19 +60,10 @@ std::vector<color_t> combi(size_t order,
       floor -= step;
       --letter;
     }
-    /*int begin = alphabet.at(letter);
-    std::vector<color_t> new_alphabet (alphabet.size());*/
     color_t new_color = alphabet.at(letter);
-    /*std::cout << "before " << new_color << std::endl;
-    print(alphabet);*/
     alphabet.erase(alphabet.begin() + letter);
-    // std::cout << "after \n";
-    // print(alphabet);
-    // auto it = std::copy_if(alphabet.begin(), alphabet.end(),
-    // new_alphabet.begin())
     auto res = combi(order - floor, length - 1, alphabet);
     res.insert(res.begin(), new_color);
-    // std::vector<color_t>();
     return res;
   }
 }
