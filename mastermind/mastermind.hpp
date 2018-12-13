@@ -3,8 +3,8 @@
 #include <vector>
 #include <iostream>
 
-#define COLORS 15
-#define SPOTS 7
+#define COLORS 10
+#define SPOTS 4
 #define DEBUG true
 
 typedef int color_t;

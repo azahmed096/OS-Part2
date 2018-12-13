@@ -11,7 +11,9 @@ struct task {
   int count;
 };
 
-
+/*
+  Class for generating combinaisons
+*/
 class Generator {
   size_t current, count;
   int length;
