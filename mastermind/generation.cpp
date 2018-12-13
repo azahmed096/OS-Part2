@@ -19,8 +19,10 @@ std::vector<color_t> Generator::next() {
     return std::vector<color_t>{-1, -1, -1, -1};
   }
 
+/* Adding of a plausible guess to the history */
 void Generator::add(masterResponse resp) {history.push_back(resp); }
 
+/* */
 task debut_nb(int players_count, int tasks, int player_id) {
   int d = tasks / players_count;
   int m = tasks % players_count;
@@ -34,6 +36,8 @@ task debut_nb(int players_count, int tasks, int player_id) {
   }
 }
 
+/* Method that returns a specific combinaison by taking in 
+parameter the order of the desired combinaison */
 std::vector<color_t> combi(size_t order,
                            uint length,
                            std::vector<color_t> alphabet) {
@@ -67,6 +71,7 @@ std::vector<color_t> combi(size_t order,
 }
 
 
+/* Factorial method */
 size_t factorial(uint x) {
   size_t res = 1;
   for (auto i = 2; i <= x; ++i) {
@@ -75,6 +80,7 @@ size_t factorial(uint x) {
   return res;
 }
 
+/* Number of combinaison that will be generated */
 size_t arangement(uint n, uint k) {
   return factorial(n) / factorial(n - k);
 }
