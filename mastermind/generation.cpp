@@ -1,9 +1,10 @@
 #include "generation.hpp"
 
 
-/* Return the next plausible combinaison 
-but if no plausible guess if found, the method return an
-array of -1
+/*
+  Return the next plausible combinaison
+  but if no plausible guess if found, the method return a
+  vector containing a -1
 */
 std::vector<color_t> Generator::next() {
     bool plaus = false;
@@ -20,7 +21,11 @@ std::vector<color_t> Generator::next() {
     if (plaus) {
       return result;
     }
-    return std::vector<color_t>{-1};
+    // does not need to have size equals to SPOTS
+    // when the master will see the first is -1
+    // it will recognize that it is an error
+    // and the rest of the buffer have already "random" values..
+    return std::vector<color_t>{ERROR};
   }
 
 /* Adding of a plausible guess to the history */
@@ -43,8 +48,10 @@ task debut_nb(int players_count, int tasks, int player_id) {
   }
 }
 
-/* Method that returns a specific combinaison by taking in 
-parameter the order of the desired combinaison */
+/*
+  Method that returns a specific combinaison (with order and without repetion)
+  by taking in parameter the order of the desired combinaison
+*/
 std::vector<color_t> combi(size_t order,
                            uint length,
                            std::vector<color_t> alphabet) {
@@ -52,8 +59,8 @@ std::vector<color_t> combi(size_t order,
     return std::vector<color_t>();
   } else {
     auto n = alphabet.size();
-    int total = arangement(n, length);
-    int floor = total;
+    auto total = arangement(n, length);
+    auto floor = total;
     int step = total / n;
     int letter = n;
     while (floor > order) {
@@ -72,7 +79,7 @@ std::vector<color_t> combi(size_t order,
 /* Factorial method */
 size_t factorial(uint x) {
   size_t res = 1;
-  for (auto i = 2; i <= x; ++i) {
+  for (auto i = 2u; i <= x; ++i) {
     res *= i;
   }
   return res;
@@ -83,7 +90,9 @@ size_t arangement(uint n, uint k) {
   return factorial(n) / factorial(n - k);
 }
 
-
+/*
+  Operator for printing a task
+*/
 std::ostream& operator<< (std::ostream& os, const task& obj) {
     os << "task(begin=" << obj.begin << ",count=" << obj.count << ')';
     return os;
