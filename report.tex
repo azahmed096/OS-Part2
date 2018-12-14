@@ -38,6 +38,7 @@
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage[colorinlistoftodos]{todonotes}
+\usepackage{hyperref}
 
 \begin{document}
 
@@ -114,7 +115,17 @@ Let consider a mastermind game with S spots and N colors.
 \paragraph{Step 2 : } Divide the number return in Step 1 by the number of processes -1 ( we don't take into account the master node ). The step 2 will return for all processes the maximum number of guesses that the process will generate in the worst case and the index from which this generation will start. Lets call those two numbers G and I
 
 \paragraph{Step 3 : } At each turn all the processes will send (starting from I), the next plausible guess until the process reach the number  G.
+\\
+The following graphics explain those 3 steps :
 
+        \begin{figure}[H]
+	    \centering
+	    \includegraphics[width=15cm] {pTask.png}
+	    \caption{Task between processes }
+	    \label{plot12}
+	\end{figure}
+	
+	
 \subsection{Criteria for comparing two evaluation}
 An evaluation is a pair of two integers: $perfect$ and $colourOnly$. To determine the best 
 between two evaluation we take the one with a higher number of $perfect$. If $perfect$s are equals
@@ -172,4 +183,14 @@ We discover that parallelization was a powerfull method because it allows us to 
 
 \section{Conclusion}
 As said in the introduction, we build multi-processes algorithm for solving the mastermind game. This project helped us to understand deeply how multi-processing and parallelization works. The project allowed us also to see, how powerful can be this method but it also revealed us limitations of parallelization.
+
+\section{Sources}
+Google images : 
+\begin{enumerate}
+    \item  \href{https://www.google.com/search?q=mpi+gather&source=lnms&tbm=isch&sa=X&ved=0ahUKEwiux-DMh5$_$fAhVQbFAKHX87DsUQ$_$AUIDigB&biw=1366&bih=695#imgrc=wk5b6Rw6eXn95M:}{MPI Gather Image}.
+    
+    \item \href{https://www.google.com/search?q=mpi+gather&source=lnms&tbm=isch&sa=X&ved=0ahUKEwiux
+-DMh5_fAhVQbFAKHX87DsUQ_AUIDigB&biw=1366&bih=695#imgrc=WAJ80qLx2p9dvM:}{MPI BCast Image}
+\end{enumerate}
+
 \end{document}
