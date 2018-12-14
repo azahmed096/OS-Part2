@@ -37,6 +37,8 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{float}
+\usepackage{booktabs}
+
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage{hyperref}
 
@@ -115,7 +117,8 @@ Let consider a mastermind game with S spots and N colors.
 \paragraph{Step 2 : } Divide the number return in Step 1 by the number of processes -1 ( we don't take into account the master node ). The step 2 will return for all processes the maximum number of guesses that the process will generate in the worst case and the index from which this generation will start. Lets call those two numbers G and I
 
 \paragraph{Step 3 : } At each turn all the processes will send (starting from I), the next plausible guess until the process reach the number  G.
-\\
+
+\paragraph
 The following graphics explain those 3 steps :
 
         \begin{figure}[H]
@@ -131,9 +134,9 @@ An evaluation is a pair of two integers: $perfect$ and $colourOnly$. To determin
 between two evaluation we take the one with a higher number of $perfect$. If $perfect$s are equals
 we take the higher $colourOnly$.
 
-\subsection{Choice of int $size_t$ instead of Int}
-To represent colors, we decided to not use interger data type but to use int $size_t$ because int $size_t$ provide more colors choices than Int.\\
-The following graph shows the maximum numbers of possible colors using int $size_t$ : 
+\subsection{Choice of int $size\_t$ instead of Int}
+To represent colors, we decided to not use interger data type but to use int $size\_t$ because int $size\_t$ provide more colors choices than Int.\\
+The following graph shows the maximum numbers of possible colors (with the worst case where the number of spots is equal to the number of colors) using int $size\_t$ : 
 
         \begin{figure}[H]
 	    \centering
@@ -170,25 +173,57 @@ Secondly we used MPI BCast in order to send a guess and its evaluation to all pl
 	\label{plot12}
 \end{figure}
 \section{Performances and Limitations}
-About our code performances and limitations we observed after several running that, the solution was found in at most 6 turn for a sport range of 6 and color range of 15. We also observed that our algorithm end in at most 25 seconds for those range also. \\
-One big limitation of our algorithm is the fact that, if the number of spots and colors became huge the speed of our algorithm will decrease proportionally and resources needed will grows also. 
+About our code performances and limitations we observed after several running that,
+the solution was found in at most 6 turn for a spot range of 6 and color range of 15.
+We also observed that our algorithm end in at most 25 seconds for those range also.
 
+\paragraph{}
+As we will see in the next section when the number of color is high and
+the number of spots is too close to the number of colors.
+
+\paragraph{}
+In table \ref{table1} we can see some running time examples.
+
+\begin{table}[]
+	\caption{Time in seconds for respectively 4 and 8 processors}
+	\label{table1}
+	\begin{tabular}{|l|l|l|l|}
+		\hline
+		S $\backslash$ C       & \textbf{10} & \textbf{12} & \textbf{14} \\ \hline
+		\textbf{4} & 0,3         & 0,38        & 0,4         \\ \hline
+		\textbf{6} & 1,05        & 4,6         & 9,95        \\ \hline
+		\textbf{8} & 9,63        & 154,4       & 827         \\ \hline
+	\end{tabular}
+	\begin{tabular}{|l|l|l|l|}
+		\hline
+		S $\backslash$ C       & \textbf{10} & \textbf{12} & \textbf{14} \\ \hline
+		\textbf{4} & 0,29         & 0,57        & 0,6         \\ \hline
+		\textbf{6} & 1,25        & 1,99       & 9,61        \\ \hline
+		\textbf{8} & 10,81        & 128,32       & 787,95         \\ \hline
+	\end{tabular}
+	\end{table}
 
 \section{Formula giving the number of possible guesses at start depending on spots and 
 colors number}
 Let call S the spots number, C the colors number and P the set of plausible guesses at each turn. \\
 The following formula give the number of possible guesses at start depending on spots and 
 colors number : \\
-$ \frac{C!}{(C-S)!}$ - P
-
-\\
-\textbf{Note :} The P set can be easily calculate by doing an evaluation between a new guess and previous guesses.
+\[
+	\frac{C!}{(C-S)!}
+\] 
 
 \section{Difficulties during project implementation}
 \subsection{Plausible Guess}
 During the project a big difficulty that we met was to understand, the concept of plausible guess and how to implement it in our source code.  To overcome this problem we decide to download on our personal cell phones the mastermind game and to try to understand this notion.
+
+To know if a guess is plausible we should do the same process the master do with the solution.
+We evaluate olds guess and take the current geuss as solution. If we don't encounter any contradiction
+(different number of $perfect$ or different number of $colourOnly$) we know that the current
+guess is plausible. Otherwise we continue the brute force.
+
 \subsection{Hydra message protocol}
 As hydra was something new to us, it wasn't something easy for us to understand directly how hydra's message protocols works. This problem were solved by simply reading the file available on UV and by practicing. 
+
 
 
 \section{Personal critics on parallel algorithm}
@@ -199,8 +234,13 @@ We discover that parallelization was a powerfull method because it allows us to 
     \item Delays of the communication 
 \end{enumerate}
 
+When a processors has no more plausible guess in its burte force range it should
+consume its range to figure it out. While other processors are ready to send their guesses.
+
+And even worse after consuming its range the processor become useless.
+
 \section{Conclusion}
-As said in the introduction, we build multi-processes algorithm for solving the mastermind game. This project helped us to understand deeply how multi-processing and parallelization works. The project allowed us also to see, how powerful can be this method but it also revealed us limitations of parallelization.
+As said in the introduction, we built multi-processes algorithm for solving the mastermind game. This project helped us to understand deeply how multi-processing and parallelization works. The project allowed us also to see, how powerful can be this method but it also revealed us limitations of parallelization.
 
 \section{Sources}
 Google images : 
@@ -210,5 +250,14 @@ Google images :
     \item \href{https://www.google.com/search?q=mpi+gather&source=lnms&tbm=isch&sa=X&ved=0ahUKEwiux
 -DMh5_fAhVQbFAKHX87DsUQ_AUIDigB&biw=1366&bih=695#imgrc=WAJ80qLx2p9dvM:}{MPI BCast Image}
 \end{enumerate}
+
+\section{Running the code}
+
+A \texttt{make run} command will compile and run the program.
+
+The number of colors and spots are defined as preprocessor macros in the \texttt{mastermind.hpp} file
+where they can be changed.
+
+Another way to set them is as parameters to the compiler (for example \texttt{-DCOLORS=10 -DSPOTS=4}).
 
 \end{document}
