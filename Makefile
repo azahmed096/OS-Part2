@@ -11,5 +11,8 @@ compile:
 rund: compile
 	mpirun -np $(PROCESS) gdb -ex='set confirm on' -ex=run -ex=quit --args ./hello # mpirun -np $(PROCESS) gdb -ex run ./hello
 
+report:
+	xelatex report.tex
+
 run: compile
 	mpirun -np $(PROCESS) ./hello

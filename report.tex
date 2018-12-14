@@ -106,13 +106,19 @@ The main goal of this project was to help us become familiar with parallel algor
 \subsection{Division of the task between processes}
 To understand how we decide to split the solving task between the processes, let consider the following example : \\
 Let consider a mastermind game with S spots and N colors.
-\paragraph{Step 1 : } Calculate the number of all possible guesses that could be generated: \\
+\paragraph{Step 1 : } Calculate the number of all possible guesses that could be generated:
 
-$ \frac{N!}{(N-S)!} $
+% utiliser \[ à la place de $ pour que la formule soit séparée du paragraphe
+\[ \frac{N!}{(N-S)!} \]
 
 \paragraph{Step 2 : } Divide the number return in Step 1 by the number of processes -1 ( we don't take into account the master node ). The step 2 will return for all processes the maximum number of guesses that the process will generate in the worst case and the index from which this generation will start. Lets call those two numbers G and I
 
 \paragraph{Step 3 : } At each turn all the processes will send (starting from I), the next plausible guess until the process reach the number  G.
+
+\subsection{Criteria for comparing two evaluation}
+An evaluation is a pair of two integers: $perfect$ and $colourOnly$. To determine the best 
+between two evaluation we take the one with a higher number of $perfect$. If $perfect$s are equals
+we take the higher $colourOnly$.
 
 \section{MPI Protocal used}
 In our project we decide to us two MPI protocols, firstly the MPI Gather and secondly the MPI BCast. \\

@@ -31,57 +31,78 @@ void Master::print_recieved(guess_t guess) {
 }
 
 
-void Master::run() {
-  guess_t sol = &solution[0];
-  bool finished = false;
-  
 /*
-  // Uncommenting this will use the worst case solution
-  solution.clear();
-  int xx = COLORS - 1;
-  while (solution.size() < SPOTS){
-    solution.push_back(xx);
-    --xx;
-  }
+  Return the best evaluation with its corresponding
+  guess (in a MasterResponse struct)
+
+  The criteria for choosing the best struct
+  is defined in the operator <.
 */
+masterResponse Master::find_best() {
+  guess_t sol = &solution[0];
+  evaluation best_eval{-1 /* perfect */, -1 /* colourOnly */};;
+  guess_t best = nullptr;
+  for (int i = SPOTS; i < size * SPOTS; i += SPOTS) {
+    auto current = recvBuff + i;
+    print_recieved(current);
+
+    if (*current == ERROR) {  // recvBuff[4]
+      std::cout << "\terror" << std::endl;
+      continue;
+    }
+    auto eval = evaluate(sol, current);
+    std::cout << '\t' << eval << std::endl;
+    if (eval > best_eval) {
+      best_eval = eval;
+      best = current;
+    }
+  }
+  if (best == nullptr) {
+    std::cout << "!Something wrong: nullptr is the best" << std::endl
+              << std::endl;
+  }
+  masterResponse resp;
+  resp.eval = best_eval;
+  for (auto i = 0; i < SPOTS; ++i) {
+    resp.colors[i] = best[i];
+  }
+  return resp;
+}
+
+void Master::run() {
+  bool finished = false;
+  /*
+    // Uncommenting this will use the worst case solution
+    // useful to evaluate the maximum running time for a certain
+    // color or spot
+    solution.clear();
+    int xx = COLORS - 1;
+    while (solution.size() < SPOTS){
+      solution.push_back(xx);
+      --xx;
+    }
+  */
+  // 4 vs 5
+  // solution = {1, 5, 7, 6};
+  // 5 vs 3
+  // solution = {9, 8, 7, 6};
+  // 2 vs 
+  solution = {8, 9, 7, 6};
+
+
   print_solution();
   while (!finished) {
-    evaluation best_eval{-1 /* perfect */, -1 /* colourOnly */};
-    guess_t best = nullptr;
-
     MPI_Gather(&sendBuff, SPOTS /*sendcnt*/, MPI_INT, recvBuff,
                SPOTS /*recvcnt*/, MPI_INT, 0, MPI_COMM_WORLD);
     std::cout << "[master] recieved Guess:" << std::endl;
 
-    for (int i = SPOTS; i < size * SPOTS; i += SPOTS) {
-      auto current = recvBuff + i;
-      print_recieved(current);
+    auto best_eval = find_best();
 
-      if (*current == ERROR) { // recvBuff[4]
-        std::cout << "\terror" << std::endl;
-        continue;
-      }
-      auto eval = evaluate(sol, current);
-      std::cout << '\t' << eval << std::endl;
-      if (eval > best_eval) {
-        best_eval = eval;
-        best = current;
-      }
-    }
-    if (best == nullptr) {
-      std::cout << "Something wrong: nullptr is the best" 
-        << std::endl << std::endl;
-    }
-    finished = best_eval.perfect == SPOTS;
-    masterResponse resp;
-    resp.eval = best_eval;
-    for (auto i = 0; i < SPOTS; ++i) {
-      resp.colors[i] = best[i];
-    }
-    std::cout << "Best evaluation is " << best_eval.perfect << ","
-              << best_eval.colourOnly << std::endl << std::endl;
+    finished = best_eval.eval.perfect == SPOTS;
+    std::cout << "Best evaluation is " << best_eval.eval
+              << std::endl;
 
-    MPI_Bcast(reinterpret_cast<int*>(&resp),
+    MPI_Bcast(reinterpret_cast<int*>(&best_eval),
               sizeof(masterResponse) / sizeof(int), MPI_INT, 0, MPI_COMM_WORLD);
   }
 }

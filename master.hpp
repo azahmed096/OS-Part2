@@ -12,6 +12,7 @@ class Master {
   int* recvBuff;
   void print_solution();
   void print_recieved(guess_t);
+  masterResponse find_best();
 public:
   void run();
   Master(int player_count);
