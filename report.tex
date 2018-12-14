@@ -121,7 +121,7 @@ The following graphics explain those 3 steps :
         \begin{figure}[H]
 	    \centering
 	    \includegraphics[width=15cm] {pTask.png}
-	    \caption{Task between processes }
+	    \caption{Maximum number of colors }
 	    \label{plot12}
 	\end{figure}
 	
@@ -130,6 +130,17 @@ The following graphics explain those 3 steps :
 An evaluation is a pair of two integers: $perfect$ and $colourOnly$. To determine the best 
 between two evaluation we take the one with a higher number of $perfect$. If $perfect$s are equals
 we take the higher $colourOnly$.
+
+\subsection{Choice of int $size_t$ instead of Int}
+To represent colors, we decided to not use interger data type but to use int $size_t$ because int $size_t$ provide more colors choices than Int.\\
+The following graph shows the maximum numbers of possible colors using int $size_t$ : 
+
+        \begin{figure}[H]
+	    \centering
+	    \includegraphics[width=15cm] {maxColors.png}
+	    \caption{Maximum number of colors }
+	    \label{plot12}
+	\end{figure}
 
 \section{MPI Protocal used}
 In our project we decide to us two MPI protocols, firstly the MPI Gather and secondly the MPI BCast. \\
@@ -150,7 +161,14 @@ Secondly we used MPI BCast in order to send a guess and its evaluation to all pl
 	    \label{plot12}
 	\end{figure}
 
-\section{Class diagram and code description}	
+\section{Class diagram}	
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm] {classDiag.JPG}
+	\caption{Class diagram  }
+	\label{plot12}
+\end{figure}
 \section{Performances and Limitations}
 About our code performances and limitations we observed after several running that, the solution was found in at most 6 turn for a sport range of 6 and color range of 15. We also observed that our algorithm end in at most 25 seconds for those range also. \\
 One big limitation of our algorithm is the fact that, if the number of spots and colors became huge the speed of our algorithm will decrease proportionally and resources needed will grows also. 
