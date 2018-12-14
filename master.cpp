@@ -58,7 +58,7 @@ masterResponse Master::find_best() {
     }
   }
   if (best == nullptr) {
-    std::cout << "!Something wrong: nullptr is the best" << std::endl
+    std::cout << "!Something went wrong all players send errors" << std::endl
               << std::endl;
   }
   masterResponse resp;
@@ -71,6 +71,7 @@ masterResponse Master::find_best() {
 
 void Master::run() {
   bool finished = false;
+  std::cout << "[master] number of arangements:" << arangement(COLORS, SPOTS) << std::endl;
   /*
     // Uncommenting this will use the worst case solution
     // useful to evaluate the maximum running time for a certain
@@ -82,14 +83,6 @@ void Master::run() {
       --xx;
     }
   */
-  // 4 vs 5
-  // solution = {1, 5, 7, 6};
-  // 5 vs 3
-  // solution = {9, 8, 7, 6};
-  // 2 vs 
-  solution = {8, 9, 7, 6};
-
-
   print_solution();
   while (!finished) {
     MPI_Gather(&sendBuff, SPOTS /*sendcnt*/, MPI_INT, recvBuff,

@@ -34,18 +34,17 @@ void Generator::add(masterResponse resp) {history.push_back(resp); }
 /* Method that return for each process the number of combinaison that 
 it has to test and the starting index (order of the combinaison)
 
-Nb : player count correspond to process id -1  */
+Nb : 
+  player_count correspond to process id -1
+  player_id is the MPI rank - 1 */
 task debut_nb(int players_count, int tasks, int player_id) {
   int d = tasks / players_count;
   int m = tasks % players_count;
-  if (m == 0) {
-    return {player_id * d, d};
-  } else {
-    if (player_id == players_count - 1) {
-      return {tasks - m, m};
-    }
-    return {player_id * (d + 1), d + 1};
-  }
+
+  return {
+    player_id * d,
+    (player_id == players_count - 1) ? m + d: d
+  };
 }
 
 /*

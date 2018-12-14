@@ -12,7 +12,7 @@ Player::Player(int id, int size)
       gen(player_task.begin, player_task.count, SPOTS) {}
 
 void Player::run() {
-  masterResponse resp;
+  masterResponse resp {{0, 0}, {0}};
 
   print_work_range();
 
