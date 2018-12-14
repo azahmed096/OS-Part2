@@ -125,7 +125,7 @@ In our project we decide to us two MPI protocols, firstly the MPI Gather and sec
 We used the MPI Gather in order to get from the game master all the guess that players node generate therefore the master's receive buffer size at each turn  was equal to the spot's number * the number of process. 
         \begin{figure}[H]
 	    \centering
-	    \includegraphics[width=9cm] {gather.png}
+	    \includegraphics[width=8cm] {gather.png}
 	    \caption{MPI Gather }
 	    \label{plot12}
 	\end{figure}
@@ -134,7 +134,7 @@ Secondly we used MPI BCast in order to send a guess and its evaluation to all pl
 
         \begin{figure}[H]
 	    \centering
-	    \includegraphics[width=11cm] {bcast1.png}
+	    \includegraphics[width=8cm] {bcast2.png}
 	    \caption{MPI BCast  }
 	    \label{plot12}
 	\end{figure}
@@ -147,6 +147,14 @@ One big limitation of our algorithm is the fact that, if the number of spots and
 
 \section{Formula giving the number of possible guesses at start depending on spots and 
 colors number}
+Let call S the spots number, C the colors number and P the set of plausible guesses at each turn. \\
+The following formula give the number of possible guesses at start depending on spots and 
+colors number : \\
+$ \frac{C!}{(C-S)!}$ - P
+
+\\
+\textbf{Note :} The P set can be easily calculate by doing an evaluation between a new guess and previous guesses.
+
 \section{Difficulties during project implementation}
 \subsection{Plausible Guess}
 During the project a big difficulty that we met was to understand, the concept of plausible guess and how to implement it in our source code.  To overcome this problem we decide to download on our personal cell phones the mastermind game and to try to understand this notion.
@@ -161,4 +169,7 @@ We discover that parallelization was a powerfull method because it allows us to 
     \item Parallel algorithm are harder to design 
     \item Delays of the communication 
 \end{enumerate}
+
+\section{Conclusion}
+As said in the introduction, we build multi-processes algorithm for solving the mastermind game. This project helped us to understand deeply how multi-processing and parallelization works. The project allowed us also to see, how powerful can be this method but it also revealed us limitations of parallelization.
 \end{document}
